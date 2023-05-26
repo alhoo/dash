@@ -42,7 +42,7 @@ def flatten_grouping(grouping, schema=None):
         ]
 
     if isinstance(schema, dict):
-        return [g for k in schema for g in flatten_grouping(grouping[k], schema[k])]
+        return [g for k in sorted(schema) for g in flatten_grouping(grouping[k], schema[k])]
 
     return [grouping]
 
@@ -87,7 +87,7 @@ def make_grouping_by_index(schema, flat_values):
         if isinstance(value, dict):
             return {
                 k: _perform_make_grouping_like(v, next_values)
-                for i, (k, v) in enumerate(value.items())
+                for i, (k, v) in enumerate([(k, value[k]) for k in sorted(value)])
             }
 
         return next_values.pop(0)
